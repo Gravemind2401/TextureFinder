@@ -5,8 +5,56 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TextureFinder"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="600" Width="800">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <StackPanel>
+            <Label>File</Label>
+            <DockPanel>
+                <Button Content="..." DockPanel.Dock="Right" Padding="5,0" 
+                        Click="btnBrowse_Click" />
+                <TextBox IsReadOnly="True" Text="{Binding FileName}" />
+            </DockPanel>
+            <Separator Margin="0,10" />
+            <Label>Format Mode</Label>
+            <ComboBox ItemsSource="{Binding AvailableFormatModes}"
+                      SelectedItem="{Binding SelectedFormatMode}" />
+            <ComboBox ItemsSource="{Binding AvailableDxgiFormats}"
+                      SelectedItem="{Binding SelectedDxgiFormat}"
+                      Visibility="{Binding DxgiVisibility}" />
+            <ComboBox ItemsSource="{Binding AvailableXboxFormats}"
+                      SelectedItem="{Binding SelectedXboxFormat}"
+                      Visibility="{Binding XboxVisibility}" />
+            <Separator Margin="0,10" />
+            <Label>Address</Label>
+            <DockPanel>
+                <local:IntegerControl Value="{Binding StartAddress}" DockPanel.Dock="Right" />
+                <TextBox Text="{Binding StartAddress}" />
+            </DockPanel>
+            <Label>Offset</Label>
+            <DockPanel>
+                <local:IntegerControl Value="{Binding Offset}" DockPanel.Dock="Right" />
+                <TextBox Text="{Binding Offset}" />
+            </DockPanel>
+            <Separator Margin="0,10" />
+            <Label>Dimensions</Label>
+            <DockPanel>
+                <local:IntegerControl Value="{Binding Width}" DockPanel.Dock="Right" />
+                <TextBox Text="{Binding Width}" />
+            </DockPanel>
+            <DockPanel>
+                <local:IntegerControl Value="{Binding Height}" DockPanel.Dock="Right" />
+                <TextBox Text="{Binding Height}" />
+            </DockPanel>
+            <Separator Margin="0,10" />
+            <CheckBox Content="Deflate" IsChecked="{Binding Deflate}" Margin=" 20,0"/>
+        </StackPanel>
+        <local:ZoomPanel Grid.Column="1" MaxZoom="8" MinZoom="0.1" Background="CornflowerBlue"
+                         ZoomLevel="{Binding ZoomLevel}">
+            <Image RenderTransformOrigin="0.5,0.5" Source="{Binding ImageSource}" />
+        </local:ZoomPanel>
     </Grid>
 </Window>

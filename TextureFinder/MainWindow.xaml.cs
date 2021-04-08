@@ -20,9 +20,26 @@ namespace TextureFinder
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly BitmapOptionsModel model = new BitmapOptionsModel();
+
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = model;
+        }
+
+        private void btnBrowse_Click(object sender, RoutedEventArgs e)
+        {
+            var ofd = new Microsoft.Win32.OpenFileDialog
+            {
+                CheckFileExists = true,
+                Multiselect = false
+            };
+
+            if (ofd.ShowDialog() != true)
+                return;
+
+            model.FileName = ofd.FileName;
         }
     }
 }

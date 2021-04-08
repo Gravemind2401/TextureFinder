@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextureFinder", "TextureFinder\TextureFinder.csproj", "{4B4EECB1-4E65-4072-9528-1D756B8FF45C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Drawing.Dds", "..\System.Drawing.Dds\System.Drawing.Dds\System.Drawing.Dds.csproj", "{A31A58A8-2BC6-43AF-AD81-692B2E37F01A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{4B4EECB1-4E65-4072-9528-1D756B8FF45C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B4EECB1-4E65-4072-9528-1D756B8FF45C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B4EECB1-4E65-4072-9528-1D756B8FF45C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A31A58A8-2BC6-43AF-AD81-692B2E37F01A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A31A58A8-2BC6-43AF-AD81-692B2E37F01A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A31A58A8-2BC6-43AF-AD81-692B2E37F01A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A31A58A8-2BC6-43AF-AD81-692B2E37F01A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
