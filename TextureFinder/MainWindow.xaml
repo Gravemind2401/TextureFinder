@@ -31,12 +31,12 @@
             <Separator Margin="0,10" />
             <Label>Address</Label>
             <DockPanel>
-                <local:IntegerControl Value="{Binding StartAddress}" DockPanel.Dock="Right" />
+                <local:IntegerControl Value="{Binding StartAddress}" Step="{Binding OffsetStep}" DockPanel.Dock="Right" />
                 <TextBox Text="{Binding StartAddress}" />
             </DockPanel>
             <Label>Offset</Label>
             <DockPanel>
-                <local:IntegerControl Value="{Binding Offset}" DockPanel.Dock="Right" />
+                <local:IntegerControl Value="{Binding Offset}" Step="{Binding OffsetStep}" DockPanel.Dock="Right" />
                 <TextBox Text="{Binding Offset}" />
             </DockPanel>
             <Separator Margin="0,10" />
@@ -51,6 +51,8 @@
             </DockPanel>
             <Separator Margin="0,10" />
             <CheckBox Content="Deflate" IsChecked="{Binding Deflate}" Margin=" 20,0"/>
+            <Label>Step</Label>
+            <TextBox Text="{Binding OffsetStep}" />
         </StackPanel>
         <local:ZoomPanel Grid.Column="1" MaxZoom="8" MinZoom="0.1" Background="CornflowerBlue"
                          ZoomLevel="{Binding ZoomLevel}">

@@ -124,6 +124,17 @@ namespace TextureFinder
             }
         }
 
+        private int offsetStep = 1;
+        public int OffsetStep
+        {
+            get => offsetStep;
+            set
+            {
+                if (SetProperty(ref offsetStep, value))
+                    UpdateImageSource();
+            }
+        }
+
         private int startAddress;
         public int StartAddress
         {

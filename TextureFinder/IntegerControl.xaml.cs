@@ -29,6 +29,15 @@ namespace TextureFinder
             set { SetValue(ValueProperty, value); }
         }
 
+        public static readonly DependencyProperty StepProperty =
+            DependencyProperty.Register(nameof(Step), typeof(int), typeof(IntegerControl), new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+        public int Step
+        {
+            get => (int)GetValue(StepProperty);
+            set => SetValue(StepProperty, value);
+        }
+
         public IntegerControl()
         {
             InitializeComponent();
@@ -36,12 +45,12 @@ namespace TextureFinder
 
         private void MinusButton_Click(object sender, RoutedEventArgs e)
         {
-            Value--;
+            Value -= Math.Max(Step, 1);
         }
 
         private void PlusButton_Click(object sender, RoutedEventArgs e)
         {
-            Value++;
+            Value += Math.Max(Step, 1);
         }
     }
 }
