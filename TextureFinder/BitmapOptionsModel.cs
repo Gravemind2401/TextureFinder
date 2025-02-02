@@ -65,8 +65,8 @@ namespace TextureFinder
         private double zoomLevel;
         public double ZoomLevel
         {
-            get { return zoomLevel; }
-            set { SetProperty(ref zoomLevel, value); }
+            get => zoomLevel;
+            set => SetProperty(ref zoomLevel, value);
         }
 
         private FileStream fileStream;
@@ -74,7 +74,7 @@ namespace TextureFinder
         private string fileName;
         public string FileName
         {
-            get { return fileName == null ? null : Path.GetFileName(fileName); }
+            get => fileName == null ? null : Path.GetFileName(fileName);
             set
             {
                 if (SetProperty(ref fileName, value))
@@ -90,7 +90,7 @@ namespace TextureFinder
         private FormatMode selectedFormatMode;
         public FormatMode SelectedFormatMode
         {
-            get { return selectedFormatMode; }
+            get => selectedFormatMode;
             set
             {
                 if (SetProperty(ref selectedFormatMode, value))
@@ -105,7 +105,7 @@ namespace TextureFinder
         private DxgiFormat selectedDxgiFormat;
         public DxgiFormat SelectedDxgiFormat
         {
-            get { return selectedDxgiFormat; }
+            get => selectedDxgiFormat;
             set
             {
                 if (SetProperty(ref selectedDxgiFormat, value))
@@ -116,7 +116,7 @@ namespace TextureFinder
         private XboxFormat selectedXboxFormat;
         public XboxFormat SelectedXboxFormat
         {
-            get { return selectedXboxFormat; }
+            get => selectedXboxFormat;
             set
             {
                 if (SetProperty(ref selectedXboxFormat, value))
@@ -127,7 +127,7 @@ namespace TextureFinder
         private int startAddress;
         public int StartAddress
         {
-            get { return startAddress; }
+            get => startAddress;
             set
             {
                 if (SetProperty(ref startAddress, value))
@@ -138,7 +138,7 @@ namespace TextureFinder
         private int offset;
         public int Offset
         {
-            get { return offset; }
+            get => offset;
             set
             {
                 if (SetProperty(ref offset, value))
@@ -149,7 +149,7 @@ namespace TextureFinder
         private int width;
         public int Width
         {
-            get { return width; }
+            get => width;
             set
             {
                 if (SetProperty(ref width, value))
@@ -160,7 +160,7 @@ namespace TextureFinder
         private int height;
         public int Height
         {
-            get { return height; }
+            get => height;
             set
             {
                 if (SetProperty(ref height, value))
@@ -171,7 +171,7 @@ namespace TextureFinder
         private bool deflate;
         public bool Deflate
         {
-            get { return deflate; }
+            get => deflate;
             set
             {
                 if (SetProperty(ref deflate, value))
@@ -182,8 +182,8 @@ namespace TextureFinder
         private ImageSource imageSource;
         public ImageSource ImageSource
         {
-            get { return imageSource; }
-            private set { SetProperty(ref imageSource, value); }
+            get => imageSource;
+            private set => SetProperty(ref imageSource, value);
         }
 
         public BitmapOptionsModel()
