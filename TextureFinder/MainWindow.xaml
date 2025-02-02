@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TextureFinder"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800">
+        Title="MainWindow" Height="600" Width="800"
+        d:DataContext="{d:DesignInstance Type=local:BitmapOptionsModel}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200" />
@@ -32,25 +33,27 @@
             <Label>Address</Label>
             <DockPanel>
                 <local:IntegerControl Value="{Binding StartAddress}" Step="{Binding OffsetStep}" DockPanel.Dock="Right" />
-                <TextBox Text="{Binding StartAddress}" />
+                <TextBox Text="{Binding StartAddress, UpdateSourceTrigger=LostFocus}" />
             </DockPanel>
             <Label>Offset</Label>
             <DockPanel>
                 <local:IntegerControl Value="{Binding Offset}" Step="{Binding OffsetStep}" DockPanel.Dock="Right" />
-                <TextBox Text="{Binding Offset}" />
+                <TextBox Text="{Binding Offset, UpdateSourceTrigger=LostFocus}" />
             </DockPanel>
             <Separator Margin="0,10" />
             <Label>Dimensions</Label>
             <DockPanel>
                 <local:IntegerControl Value="{Binding Width}" DockPanel.Dock="Right" />
-                <TextBox Text="{Binding Width}" />
+                <TextBox Text="{Binding Width, UpdateSourceTrigger=LostFocus}" />
             </DockPanel>
             <DockPanel>
                 <local:IntegerControl Value="{Binding Height}" DockPanel.Dock="Right" />
-                <TextBox Text="{Binding Height}" />
+                <TextBox Text="{Binding Height, UpdateSourceTrigger=LostFocus}" />
             </DockPanel>
             <Separator Margin="0,10" />
-            <CheckBox Content="Deflate" IsChecked="{Binding Deflate}" Margin=" 20,0"/>
+            <RadioButton Content="No Compression" IsChecked="True" Margin="20,0" />
+            <RadioButton Content="Deflate" IsChecked="{Binding Deflate}" Margin=" 20,0"/>
+            <RadioButton Content="Zlib" IsChecked="{Binding Zlib}" Margin="20,0" />
             <Label>Step</Label>
             <TextBox Text="{Binding OffsetStep}" />
         </StackPanel>

@@ -236,8 +236,8 @@ namespace TextureFinder
 
             try
             {
-                if (Deflate)
-                    ReadWithDeflate();
+                if (Deflate || Zlib)
+                    ReadCompressed();
                 else
                     ReadUncompressed();
             }
@@ -253,10 +253,14 @@ namespace TextureFinder
                 }
             }
 
-            void ReadWithDeflate()
+            void ReadCompressed()
             {
                 fileStream.Position = StartAddress;
-                using (var ds = new DeflateStream(fileStream, CompressionMode.Decompress, true))
+                var ds = Deflate
+                    ? (Stream)new DeflateStream(fileStream, CompressionMode.Decompress, true)
+                    : new Ionic.Zlib.ZlibStream(fileStream, Ionic.Zlib.CompressionMode.Decompress, true);
+
+                using (ds)
                 using (var br = new BinaryReader(ds))
                 {
                     var temp = new byte[0x8000];
