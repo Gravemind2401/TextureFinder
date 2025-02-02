@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing.Dds;
+using System.Drawing.Imaging;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -9,19 +10,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace TextureFinder
 {
     public enum FormatMode
     {
         DxgiFormat,
-        XboxFormat
+        XboxFormat,
+        ImageFormat
     }
 
     public class BitmapOptionsModel : BindableBase
     {
         public IReadOnlyList<FormatMode> AvailableFormatModes => availableFormatModes;
-        private readonly List<FormatMode> availableFormatModes = new List<FormatMode> { FormatMode.DxgiFormat, FormatMode.XboxFormat };
+        private readonly List<FormatMode> availableFormatModes = new List<FormatMode> { FormatMode.DxgiFormat, FormatMode.XboxFormat, FormatMode.ImageFormat };
 
         public IReadOnlyList<DxgiFormat> AvailableDxgiFormats => availableDxgiFormats;
         private readonly List<DxgiFormat> availableDxgiFormats = new List<DxgiFormat>
@@ -58,6 +61,14 @@ namespace TextureFinder
             XboxFormat.Y8,
             XboxFormat.Y8A8,
         };
+
+        //public IReadOnlyList<ImageFormat> AvailableImageFormats => availableImageFormats;
+        //private List<ImageFormat> availableImageFormats = new List<ImageFormat>
+        //{
+        //    ImageFormat.Jpeg,
+        //    ImageFormat.Png,
+        //    ImageFormat.Tiff
+        //};
 
         public Visibility DxgiVisibility => SelectedFormatMode == FormatMode.DxgiFormat ? Visibility.Visible : Visibility.Collapsed;
         public Visibility XboxVisibility => SelectedFormatMode == FormatMode.XboxFormat ? Visibility.Visible : Visibility.Collapsed;
@@ -190,12 +201,25 @@ namespace TextureFinder
             }
         }
 
+        private bool zlib;
+        public bool Zlib
+        {
+            get => zlib;
+            set
+            {
+                if (SetProperty(ref zlib, value))
+                    UpdateImageSource();
+            }
+        }
+
         private ImageSource imageSource;
         public ImageSource ImageSource
         {
             get => imageSource;
             private set => SetProperty(ref imageSource, value);
         }
+
+        private int MaxDataLength => Width * Height * 4 + 0x800;
 
         public BitmapOptionsModel()
         {
@@ -212,23 +236,71 @@ namespace TextureFinder
 
             try
             {
-                fileStream.Position = StartAddress + (Deflate ? 0 : Offset);
-                using (var ds = new DeflateStream(fileStream, CompressionMode.Decompress, true))
-                using (var br = new BinaryReader(Deflate ? (Stream)ds : fileStream, Encoding.UTF8, true))
-                {
-                    if (Deflate)
-                        br.ReadBytes(Offset);
-
-                    var data = br.ReadBytes((int)Math.Min(fileStream.Length - fileStream.Position, Width * Height * 4));
-
-                    var dds = SelectedFormatMode == FormatMode.DxgiFormat
-                        ? new DdsImage(height, width, SelectedDxgiFormat, DxgiTextureType.Texture2D, data)
-                        : new DdsImage(height, width, SelectedXboxFormat, DxgiTextureType.Texture2D, data);
-
-                    ImageSource = dds.ToBitmapSource(DecompressOptions.Bgr24);
-                }
+                if (Deflate)
+                    ReadWithDeflate();
+                else
+                    ReadUncompressed();
             }
             catch { ImageSource = null; }
+
+            void ReadUncompressed()
+            {
+                fileStream.Position = StartAddress + Offset;
+                using (var br = new BinaryReader(fileStream, Encoding.UTF8, true))
+                {
+                    var data = br.ReadBytes((int)Math.Min(fileStream.Length - fileStream.Position, MaxDataLength));
+                    LoadFromBytes(data);
+                }
+            }
+
+            void ReadWithDeflate()
+            {
+                fileStream.Position = StartAddress;
+                using (var ds = new DeflateStream(fileStream, CompressionMode.Decompress, true))
+                using (var br = new BinaryReader(ds))
+                {
+                    var temp = new byte[0x8000];
+                    var bytesToRead = Offset;
+                    while (bytesToRead > 0)
+                    {
+                        var progress = br.Read(temp, 0, temp.Length);
+                        if (progress == 0)
+                            break;
+                        bytesToRead -= progress;
+                    }
+
+                    var data = new byte[MaxDataLength];
+                    bytesToRead = (int)Math.Min(fileStream.Length - fileStream.Position, data.Length);
+                    br.Read(data, 0, bytesToRead);
+
+                    LoadFromBytes(data);
+                }
+            }
+
+            void LoadFromBytes(byte[] data)
+            {
+                if (SelectedFormatMode == FormatMode.ImageFormat)
+                {
+                    using (var ms = new MemoryStream(data))
+                    using (var image = System.Drawing.Image.FromStream(ms))
+                    using (var bitmap = new System.Drawing.Bitmap(image))
+                    {
+                        ImageSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+                          bitmap.GetHbitmap(),
+                          IntPtr.Zero,
+                          Int32Rect.Empty,
+                          BitmapSizeOptions.FromEmptyOptions());
+                    }
+                }
+                else
+                {
+                    var dds = SelectedFormatMode == FormatMode.DxgiFormat
+                        ? new DdsImage(height, width, SelectedDxgiFormat, data)
+                        : new DdsImage(height, width, SelectedXboxFormat, data);
+
+                    ImageSource = dds.ToBitmapSource(new DdsOutputArgs { Options = DecompressOptions.Bgr24 });
+                }
+            }
         }
     }
 }
