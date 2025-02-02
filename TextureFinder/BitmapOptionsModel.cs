@@ -36,6 +36,7 @@ namespace TextureFinder
             DxgiFormat.B4G4R4A4_UNorm,
             DxgiFormat.B5G6R5_UNorm,
             DxgiFormat.B5G5R5A1_UNorm,
+            DxgiFormat.B8G8R8A8_UNorm,
             DxgiFormat.P8
         };
 
