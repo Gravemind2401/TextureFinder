@@ -35,7 +35,16 @@ namespace TextureFinder
             DxgiFormat.B5G6R5_UNorm,
             DxgiFormat.B5G5R5A1_UNorm,
             DxgiFormat.B8G8R8A8_UNorm,
-            DxgiFormat.A8_UNorm
+            DxgiFormat.R8G8B8A8_SNorm,
+            DxgiFormat.A8_UNorm,
+            DxgiFormat.R8G8_UNorm,
+            DxgiFormat.R8G8_SNorm,
+            DxgiFormat.R16_UNorm,
+            DxgiFormat.R16G16B16A16_UNorm,
+            DxgiFormat.R16G16B16A16_SNorm,
+            DxgiFormat.R32G32B32_Float,
+            DxgiFormat.R32G32B32A32_Float,
+            DxgiFormat.R16G16B16A16_Float
         ];
 
         public IReadOnlyList<XboxFormat> AvailableXboxFormats => availableXboxFormats;
@@ -54,6 +63,7 @@ namespace TextureFinder
             XboxFormat.DXT5a_alpha,
             XboxFormat.Y8,
             XboxFormat.Y8A8,
+            XboxFormat.V8U8
         ];
 
         //public IReadOnlyList<ImageFormat> AvailableImageFormats => availableImageFormats;
